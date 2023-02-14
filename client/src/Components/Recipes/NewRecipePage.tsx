@@ -65,6 +65,13 @@ const Ingredients = () => {
     setIngredients(updatedIngredients);
   };
 
+  const onClickRemove = (e: React.MouseEvent<HTMLElement>, index: number) => {
+    if (index === updatedIngredients.length - 1)
+      updatedIngredients.push(newIngredient());
+    updatedIngredients.splice(index, 1);
+    setIngredients(updatedIngredients);
+  };
+
   return (
     <Card style={{ flex: "1 1" }}>
       <div style={{ width: "100%" }}>
@@ -79,6 +86,7 @@ const Ingredients = () => {
               // onKeyUp={(e) => onKeyUp(e, index)}
             />
             <Input name="amount" placeholder="Amount" />
+            <Button text="Remove" onClick={(e) => onClickRemove(e, index)} />
           </SectionRow>
         ))}
       </div>
@@ -97,7 +105,7 @@ const Steps = () => {
   const onChange = (e: React.FormEvent<HTMLDivElement>, index: number) => {
     //@ts-ignore
     const { value } = e.target;
-    updatedSteps[index] = value;
+    updatedSteps[index].text = value;
 
     if (index === updatedSteps.length - 1) updatedSteps.push(newStep());
     else {
