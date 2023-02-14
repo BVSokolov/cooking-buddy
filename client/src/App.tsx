@@ -1,10 +1,15 @@
 import React from "react";
 import "./App.css";
 import { Home } from "./Components/Home";
-import { Recipes } from "./Components/Recipes/Recipes";
+import { Navbar } from "./Components/Navigation/Navbar";
 
 function App() {
-  return <Home />;
+  return (
+    <div>
+      <Navbar />
+      <Home />
+    </div>
+  );
 }
 
 export default App;

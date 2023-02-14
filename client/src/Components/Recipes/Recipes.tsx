@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { api } from "../../api/api";
+import { Recipe } from "../../common/types";
+import { RecipePage } from "./RecipePage";
+import { Page } from "../UI/Page";
+import { Button } from "../UI/Button";
+import { NewRecipePage } from "./NewRecipePage";
+import styled from "styled-components";
 
-type Recipe = {
-  id: string;
-  name: string;
-};
+const VerticalPage = styled(Page)`
+  flex-direction: column;
+`;
 
-export const Recipes = () => {
+const RecipesPage = () => {
   const [recipes, setRecipes] = useState<Array<Recipe>>([]);
   useEffect(() => {
     const getRecipes = async () => {
@@ -18,13 +24,40 @@ export const Recipes = () => {
     getRecipes();
   }, []);
 
+  const navigate = useNavigate();
+  const goToRecipes = (e: React.MouseEvent<HTMLElement>, index: number) => {
+    e.preventDefault();
+    navigate(`${index}`);
+  };
+
+  const onNewRecipeClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    navigate("new");
+  };
+
   return (
-    <div>
-      <ul>
-        {recipes.map((recipe) => (
-          <li key={recipe.id}>{recipe.name}</li>
+    <VerticalPage>
+      <h2>Recipes</h2>
+      <Button text="New recipe" onClick={onNewRecipeClick} />
+      <div>
+        {recipes.map((recipe, index) => (
+          <Button
+            onClick={(e) => goToRecipes(e, index)}
+            key={recipe.id}
+            text={recipe.name}
+          />
         ))}
-      </ul>
-    </div>
+      </div>
+    </VerticalPage>
+  );
+};
+
+export const Recipes = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<RecipesPage />} />
+      <Route path="/new" element={<NewRecipePage />} />
+      <Route path="/:index" element={<RecipePage />} />
+    </Routes>
   );
 };
