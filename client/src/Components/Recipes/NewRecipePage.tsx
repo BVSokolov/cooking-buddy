@@ -19,32 +19,43 @@ const SectionRow = styled.div`
   width: 100%;
 `;
 
+type Ingredient = {
+  id: number;
+  name: string;
+  amount: string;
+};
+type Section = {
+  id: number;
+  name: string;
+  entries: Ingredient["id"][];
+};
 const Ingredients = () => {
-  const newIngredient = () => ({
+  const newIngredient = (): Ingredient => ({
     id: new Date().getTime(),
     name: "",
     amount: "",
   });
   const [ingredients, setIngredients] = useState([newIngredient()]);
+  const [sections, setSections] = useState<Section[]>([]);
   const updatedIngredients = [...ingredients];
-  const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
-    //@ts-ignore
-    const value = e.target.value;
+  // const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+  //   //@ts-ignore
+  //   const value = e.target.value;
 
-    // const ingr = [...ingredients];
-    // ingr[index] = { name: value, value: "" };
-    // setIngredients([...ingr]);
+  //   // const ingr = [...ingredients];
+  //   // ingr[index] = { name: value, value: "" };
+  //   // setIngredients([...ingr]);
 
-    // if (value && index === ingredients.length - 1)
-    //   setIngredients([...ingredients, { name: "", value: "" }]);
+  //   // if (value && index === ingredients.length - 1)
+  //   //   setIngredients([...ingredients, { name: "", value: "" }]);
 
-    // //TODO: Find a better way to code this, kinda crude and ugly
-    // if (!value && index > 0 && index < ingredients.length - 1)
-    //   setIngredients([
-    //     ...ingredients.slice(0, index),
-    //     ...ingredients.slice(index + 1, ingredients.length),
-    //   ]);
-  };
+  //   // //TODO: Find a better way to code this, kinda crude and ugly
+  //   // if (!value && index > 0 && index < ingredients.length - 1)
+  //   //   setIngredients([
+  //   //     ...ingredients.slice(0, index),
+  //   //     ...ingredients.slice(index + 1, ingredients.length),
+  //   //   ]);
+  // };
 
   const onChange = (e: React.FormEvent<HTMLDivElement>, index: number) => {
     //@ts-ignore
@@ -65,6 +76,11 @@ const Ingredients = () => {
     setIngredients(updatedIngredients);
   };
 
+  const onClickAddNewSection = (
+    e: React.MouseEvent<HTMLElement>,
+    index: number
+  ) => {};
+
   const onClickRemove = (e: React.MouseEvent<HTMLElement>, index: number) => {
     if (index === updatedIngredients.length - 1)
       updatedIngredients.push(newIngredient());
@@ -80,6 +96,15 @@ const Ingredients = () => {
         </SectionRow>
         {ingredients.map(({ id }, index) => (
           <SectionRow key={id} onChange={(e) => onChange(e, index)}>
+            <Button
+              text=">"
+              onClick={(e) =>
+                console.log(
+                  "asd should create a new borderless card with the ingredient at index inside it",
+                  index
+                )
+              }
+            />
             <Input
               name="name"
               placeholder="Ingredient"
